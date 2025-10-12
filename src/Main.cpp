@@ -7,7 +7,6 @@
 #include <imgui/imgui.h>
 #include <sol/sol.hpp>
 
-
 int main() {
     // Simply tries to use the Lua language with the Sol library
     sol::state lua;
