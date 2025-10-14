@@ -18,7 +18,11 @@ void Game::Initialize()
 
 void Game::Run()
 {
-    // TODO
+    while(true) {
+        ProcessInput();
+        Update();
+        Render();
+    }
 }
 
 void Game::ProcessInput()
