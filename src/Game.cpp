@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <SDL2/SDL.h>
 #include <iostream>
 
 Game::Game()
@@ -8,21 +9,45 @@ Game::Game()
 
 Game::~Game()
 {
-     std::cout << "Game destructor called!\n";
+    std::cout << "Game destructor called!\n";
 }
 
 void Game::Initialize()
 {
-    // TODO
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    {
+        std::cerr << "Error initializing SDL.\n";
+        return;
+    }
+
+    SDL_Window *window = SDL_CreateWindow(
+        NULL,
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        800,
+        600,
+        SDL_WINDOW_BORDERLESS);
+    if (!window)
+    {
+        std::cerr << "Error creating SDL window.\n";
+        return;
+    }
+
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+    if (!renderer)
+    {
+        std::cerr << "Error creating SDL renderer.\n";
+        return;
+    }
 }
 
 void Game::Run()
 {
-    while(true) {
-        ProcessInput();
-        Update();
-        Render();
-    }
+    // while(true) {
+    //     ProcessInput();
+    //     Update();
+    //     Render();
+    // }
 }
 
 void Game::ProcessInput()
