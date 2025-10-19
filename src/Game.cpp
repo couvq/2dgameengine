@@ -98,8 +98,12 @@ void Game::ProcessInput()
 void Game::Update()
 {
     // If we are too fast, waste some time until we reach the MILLISECS_PER_FRAME
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), millisecsPreviousFrame + MILLISECS_PER_FRAME));
-    // store the current frame time
+    int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+    if (timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME)
+    {
+        SDL_Delay(timeToWait);
+    }
+    // store the "previous" frame time
     millisecsPreviousFrame = SDL_GetTicks();
 
     playerPosition.x += playerVelocity.x;
