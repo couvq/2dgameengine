@@ -1,35 +1,36 @@
 #include "Logger.h"
 #include <iostream>
+#include <chrono>
 #include <ctime>
 
-std::string getTimestamp()
+std::vector<LogEntry> Logger::messages;
+
+std::string CurrentDateTimeToString()
 {
-    // Get the current time as a time_t object
-    time_t rawtime;
-    time(&rawtime);
-
-    // Convert to local time structure (tm)
-    struct tm *timeinfo;
-    timeinfo = localtime(&rawtime);
-
-    // Create a buffer to store the formatted string
-    char buffer[80]; // Adjust buffer size as needed
-
-    // Format the time into a string using strftime
-    // Example format: "YYYY-MM-DD HH:MM:SS"
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
-
-    // Convert the char array to a std::string
-    std::string dateTimeString(buffer);
-    return dateTimeString;
+    std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::string output(30, '\0');
+    std::strftime(&output[0], output.size(), "%d-%b-%Y %H:%M:%S", std::localtime(&now));
+    return output;
 }
 
 void Logger::Log(const std::string &message)
 {
-    std::cout << "LOG: [" << getTimestamp() << "] " << message << "\n";
+    LogEntry logEntry;
+    logEntry.type = LOG_INFO;
+    logEntry.message = "LOG: [" + CurrentDateTimeToString() + "]:" + message;
+
+    std::cout << "\x1B[32m" << logEntry.message << "\033[0m" << std::endl;
+
+    messages.push_back(logEntry);
 }
 
 void Logger::Err(const std::string &message)
 {
-    std::cout << "ERR: [" << getTimestamp() << "] " << message << "\n";
+    LogEntry logEntry;
+    logEntry.type = LOG_ERROR;
+    logEntry.message = "ERR: [" + CurrentDateTimeToString() + "]:" + message;
+
+    std::cout << "\x1B[91m" << logEntry.message << "\033[0m" << std::endl;
+
+    messages.push_back(logEntry);
 }
