@@ -1,8 +1,18 @@
+# Makefile variables
+CC = g++
+LANG_STD = -std=c++17
+COMPILER_FLAGS = -Wall -Wfatal-errors
+INCLUDE_PATH = -I"./libs/"
+SRC_FILES = src/*.cpp src/**/*.cpp
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -llua
+EXEC_NAME = gameengine
+
+
 build:
-	g++ -Wall -std=c++17 -I"./libs/" src/*.cpp src/**/*.cpp -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -llua -o gameengine
+	$(CC) $(COMPILER_FLAGS) $(LANG_STD) $(INCLUDE_PATH) $(SRC_FILES) $(LINKER_FLAGS) -o $(EXEC_NAME)
 
 run:
-	./gameengine
+	./$(EXEC_NAME)
 
 clean:
-	rm gameengine
+	rm $(EXEC_NAME)
