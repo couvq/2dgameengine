@@ -12,13 +12,9 @@ void System::AddEntityToSystem(Entity entity)
 
 void System::RemoveEntityFromSystem(Entity entity)
 {
-    for (int i = 0; i < entities.size(); i++)
-    {
-        if (entities[i].GetId() == entity.GetId())
-        {
-            entities.erase(entities.begin() + i);
-        }
-    }
+    entities.erase(std::remove_if(entities.begin(), entities.end(), [&entity](Entity other)
+                                  { return entity.GetId() == other.GetId(); }),
+                   entities.end());
 }
 
 std::vector<Entity> System::GetSystemEntities() const
