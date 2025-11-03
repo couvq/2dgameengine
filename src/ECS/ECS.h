@@ -12,17 +12,19 @@ const unsigned int MAX_COMPONENTS = 32;
  */
 typedef std::bitset<MAX_COMPONENTS> Signature;
 
-struct IComponent {
-    protected:
-        static int nextId;
+struct IComponent
+{
+protected:
+    static int nextId;
 };
 
 // used to assign a unique id to a component type
 template <typename T>
-class Component: public IComponent
+class Component : public IComponent
 {
     // returns the unique id of Component<T>
-    static int GetId() {
+    static int GetId()
+    {
         static auto id = nextId++;
         return id;
     }
@@ -36,7 +38,11 @@ private:
 public:
     Entity(int id) : id(id){};
     int GetId() const;
-    //...
+
+    bool operator==(const Entity &other) const
+    {
+        return id == other.id;
+    }
 };
 
 /**
